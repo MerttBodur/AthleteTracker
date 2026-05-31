@@ -1,18 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    </LinearLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
-    <include layout="@layout/nav_bottom" />
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@android:drawable/ic_menu_myplaces"
+                android:contentDescription="Profil Fotoğrafı"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-</LinearLayout>
+            <TextView
+                android:id="@+id/tv_change_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Photo"
+                app:layout_constraintTop_toBottomOf="@id/profile_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/et_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Name Surname"
+                android:inputType="textPersonName"
+                app:layout_constraintTop_toBottomOf="@id/tv_change_photo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/et_sport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Sport"
+                android:inputType="textPersonName"
+                app:layout_constraintTop_toBottomOf="@id/et_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/et_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Sport"
+                android:inputType="textPersonName"
+                app:layout_constraintTop_toBottomOf="@id/et_sport"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/et_experience"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Experience Year"
+                android:inputType="number"
+                app:layout_constraintTop_toBottomOf="@id/et_position"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <include
+        layout="@layout/nav_bottom"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
