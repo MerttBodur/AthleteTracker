@@ -47,36 +47,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_sport"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btn_sport"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sport"
-                android:inputType="textPersonName"
+                android:text="Sport"
                 app:layout_constraintTop_toBottomOf="@id/et_name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_position"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btn_position"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sport"
-                android:inputType="textPersonName"
-                app:layout_constraintTop_toBottomOf="@id/et_sport"
+                android:text="Position"
+                app:layout_constraintTop_toBottomOf="@id/btn_sport"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <EditText
-                android:id="@+id/et_experience"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/btn_experience"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Experience Year"
-                android:inputType="number"
-                app:layout_constraintTop_toBottomOf="@id/et_position"
+                android:text="Experience"
+                app:layout_constraintTop_toBottomOf="@id/btn_position"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
