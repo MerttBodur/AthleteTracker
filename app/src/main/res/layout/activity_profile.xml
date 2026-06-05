@@ -160,8 +160,52 @@
 
             </LinearLayout>
 
+            <!-- Weight input -->
+            <EditText
+                android:id="@+id/et_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Weight (kg)"
+                android:inputType="numberDecimal"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/card_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_bodyfat" />
 
+            <!-- Body Fat input -->
+            <EditText
+                android:id="@+id/et_bodyfat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Body Fat (%)"
+                android:inputType="numberDecimal"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/card_bodyfat"
+                app:layout_constraintStart_toEndOf="@id/et_weight"
+                app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Height input -->
+            <EditText
+                android:id="@+id/et_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Height (cm)"
+                android:inputType="number"
+                android:textColor="@color/white"
+                app:layout_constraintTop_toBottomOf="@id/et_weight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Save butonu -->
+            <Button
+                android:id="@+id/btn_save"
+                style="@style/OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Save Profile"
+                app:layout_constraintTop_toBottomOf="@id/et_height"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
