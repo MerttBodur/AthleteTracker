@@ -77,6 +77,91 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <!-- Weight kartı -->
+            <LinearLayout
+                android:id="@+id/card_weight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/btn_experience"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/card_bodyfat"
+                app:layout_constraintHorizontal_chainStyle="spread">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="WEIGHT" />
+
+                <TextView
+                    android:id="@+id/tv_weight_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg" />
+
+            </LinearLayout>
+
+            <!-- Body Fat kartı -->
+            <LinearLayout
+                android:id="@+id/card_bodyfat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/btn_experience"
+                app:layout_constraintStart_toEndOf="@id/card_weight"
+                app:layout_constraintEnd_toStartOf="@id/card_ffmi">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BODY FAT" />
+
+                <TextView
+                    android:id="@+id/tv_bodyfat_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="%" />
+
+            </LinearLayout>
+
+            <!-- FFMI kartı -->
+            <LinearLayout
+                android:id="@+id/card_ffmi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/btn_experience"
+                app:layout_constraintStart_toEndOf="@id/card_bodyfat"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FFMI" />
+
+                <TextView
+                    android:id="@+id/tv_ffmi_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
