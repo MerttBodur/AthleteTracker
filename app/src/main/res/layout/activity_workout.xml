@@ -1,18 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-    <include layout="@layout/nav_bottom" />
+            <TextView
+                style="@style/SectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Programs"
+                android:textSize="26sp"
+                android:layout_marginTop="20dp" />
 
-</LinearLayout>
+            <TextView
+                style="@style/CardSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your training plans"
+                android:layout_marginTop="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    style="@style/CardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start a Session" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <Button
+                        android:id="@+id/btn_quick_start"
+                        style="@style/OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:text="Quick Start" />
+
+                    <Button
+                        android:id="@+id/btn_from_program"
+                        style="@style/OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:text="From Program" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_exercise_catalog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    style="@style/CardTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Exercise Catalog" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="›"
+                    android:textSize="24sp"
+                    android:textColor="@color/light_gray" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/SectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All Programs"
+                android:layout_marginTop="32dp" />
+
+            <LinearLayout
+                android:id="@+id/card_program1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    style="@style/CardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Full Body Foundation 3-Day" />
+
+                <TextView
+                    style="@style/CardSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Beginner Strength + Athletic Base"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    style="@style/CardSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3x/week • 60 min"
+                    android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/card_program2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    style="@style/CardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Strength Base 5x5" />
+
+                <TextView
+                    style="@style/CardSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Foundational Barbell Strength"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    style="@style/CardSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3x/week • 55 min"
+                    android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/card_program3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    style="@style/CardTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5/3/1 Strength 4-Day" />
+
+                <TextView
+                    style="@style/CardSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Intermediate Sustainable Strength"
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    style="@style/CardSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4x/week • 60 min"
+                    android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include
+        layout="@layout/nav_bottom"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

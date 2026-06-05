@@ -1,18 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ScrollView
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-    <include layout="@layout/nav_bottom" />
+            <!-- Sekme butonları -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-</LinearLayout>
+                <Button
+                    android:id="@+id/btn_tab_1rm"
+                    style="@style/OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1RM" />
+
+                <Button
+                    android:id="@+id/btn_tab_rsi"
+                    style="@style/OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RSI" />
+
+                <Button
+                    android:id="@+id/btn_tab_ffmi"
+                    style="@style/OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="FFMI" />
+
+            </LinearLayout>
+
+            <!-- 1RM bölümü -->
+            <LinearLayout
+                android:id="@+id/section_1rm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Strength Estimate" />
+
+                <EditText
+                    android:id="@+id/et_1rm_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Weight (kg)"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/et_1rm_reps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Reps (1-8)"
+                    android:inputType="number"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:id="@+id/et_1rm_rir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="RIR (0-5)"
+                    android:inputType="number"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="8dp" />
+
+                <Button
+                    android:id="@+id/btn_calc_1rm"
+                    style="@style/OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calculate"
+                    android:layout_marginTop="12dp" />
+
+            </LinearLayout>
+
+            <!-- RSI bölümü -->
+            <LinearLayout
+                android:id="@+id/section_rsi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reactive Strength Index" />
+
+                <EditText
+                    android:id="@+id/et_rsi_jump"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Jump Height (cm)"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/et_rsi_gct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ground Contact Time (s)"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="8dp" />
+
+                <Button
+                    android:id="@+id/btn_calc_rsi"
+                    style="@style/OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calculate RSI"
+                    android:layout_marginTop="12dp" />
+
+            </LinearLayout>
+
+            <!-- FFMI bölümü -->
+            <LinearLayout
+                android:id="@+id/section_ffmi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fat-Free Mass Index" />
+
+                <EditText
+                    android:id="@+id/et_ffmi_weight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Weight (kg)"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="12dp" />
+
+                <EditText
+                    android:id="@+id/et_ffmi_height"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Height (cm)"
+                    android:inputType="number"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="8dp" />
+
+                <EditText
+                    android:id="@+id/et_ffmi_bf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Body Fat (%)"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="8dp" />
+
+                <Button
+                    android:id="@+id/btn_calc_ffmi"
+                    style="@style/OutlinedButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Calculate FFMI"
+                    android:layout_marginTop="12dp" />
+
+            </LinearLayout>
+
+            <!-- Sonuç -->
+            <LinearLayout
+                android:id="@+id/section_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/card_background"
+                android:padding="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    style="@style/SectionTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Result" />
+
+                <TextView
+                    android:id="@+id/tv_result"
+                    style="@style/StatValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="--"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include
+        layout="@layout/nav_bottom"
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
