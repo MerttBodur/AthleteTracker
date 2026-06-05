@@ -1,6 +1,7 @@
 package com.example.AthleteTracker.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,16 +11,22 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.AthleteTracker.R;
+import com.example.AthleteTracker.utils.FetchJsonTask;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class CalculationsActivity extends AppCompatActivity {
 
-    LinearLayout section1rm, sectionRsi, sectionFfmi;
+    LinearLayout section1rm, sectionRsi, sectionFfmi, scaleTable;
     EditText et1rmWeight, et1rmReps, et1rmRir;
     EditText etRsiJump, etRsiGct;
     EditText etFfmiWeight, etFfmiHeight, etFfmiBf;
-    TextView tvResult;
+    TextView tvResult, tvResultLabel;
     Button btnTab1rm, btnTabRsi, btnTabFfmi;
+
+    JSONArray ffmiScale;
+    JSONArray rsiScale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +47,10 @@ public class CalculationsActivity extends AppCompatActivity {
         etFfmiWeight = findViewById(R.id.et_ffmi_weight);
         etFfmiHeight = findViewById(R.id.et_ffmi_height);
         etFfmiBf = findViewById(R.id.et_ffmi_bf);
+        scaleTable = findViewById(R.id.scale_table);
 
         tvResult = findViewById(R.id.tv_result);
+        tvResultLabel = findViewById(R.id.tv_result_label);
 
         btnTab1rm = findViewById(R.id.btn_tab_1rm);
         btnTabRsi = findViewById(R.id.btn_tab_rsi);
@@ -59,7 +68,68 @@ public class CalculationsActivity extends AppCompatActivity {
         btnCalcRsi.setOnClickListener(v -> calculateRSI());
         btnCalcFfmi.setOnClickListener(v -> calculateFFMI());
 
+        fetchScales();
         setupBottomNav();
+    }
+
+    private void fetchScales() {
+        new FetchJsonTask(new FetchJsonTask.OnJsonFetchedListener() {
+            @Override
+            public void onJsonFetched(String json) {
+                try {
+                    JSONObject obj = new JSONObject(json);
+                    SharedPreferences sp = getSharedPreferences("profile", MODE_PRIVATE);
+                    String sex = sp.getString("sex", "male").toLowerCase();
+
+                    if (sex.equals("female")) {
+                        ffmiScale = obj.getJSONObject("ffmi_scale").getJSONArray("female");
+                    } else {
+                        ffmiScale = obj.getJSONObject("ffmi_scale").getJSONArray("male");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFetchError(String error) {
+                ffmiScale = null;
+            }
+        }).execute("https://raw.githubusercontent.com/MerttBodur/AthleticStandards/refs/heads/main/FFMI.json");
+
+        new FetchJsonTask(new FetchJsonTask.OnJsonFetchedListener() {
+            @Override
+            public void onJsonFetched(String json) {
+                try {
+                    JSONObject obj = new JSONObject(json);
+                    rsiScale = obj.getJSONArray("rsi_scale");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFetchError(String error) {
+                rsiScale = null;
+            }
+        }).execute("https://raw.githubusercontent.com/MerttBodur/AthleticStandards/refs/heads/main/RSI.json");
+    }
+
+    private String getLabel(JSONArray scale, double value) {
+        if (scale == null) return "Scale not available";
+        try {
+            for (int i = 0; i < scale.length(); i++) {
+                JSONObject range = scale.getJSONObject(i);
+                double min = range.getDouble("min");
+                double max = range.getDouble("max");
+                if (value >= min && value < max) {
+                    return range.getString("label");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Unknown";
     }
 
     private void showSection(String section) {
@@ -67,6 +137,7 @@ public class CalculationsActivity extends AppCompatActivity {
         sectionRsi.setVisibility(View.GONE);
         sectionFfmi.setVisibility(View.GONE);
         tvResult.setText("--");
+        tvResultLabel.setText("");
 
         switch (section) {
             case "1rm":
@@ -79,6 +150,7 @@ public class CalculationsActivity extends AppCompatActivity {
                 sectionFfmi.setVisibility(View.VISIBLE);
                 break;
         }
+        scaleTable.removeAllViews();
     }
 
     private void calculate1RM() {
@@ -98,6 +170,7 @@ public class CalculationsActivity extends AppCompatActivity {
         double oneRm = weight * (1 + effectiveReps / 30.0);
 
         tvResult.setText(String.format("%.1f kg", oneRm));
+        tvResultLabel.setText("Estimated 1RM");
     }
 
     private void calculateRSI() {
@@ -113,7 +186,10 @@ public class CalculationsActivity extends AppCompatActivity {
         double gct = Double.parseDouble(gctStr);
         double rsi = jumpHeight / gct;
 
+        String label = getLabel(rsiScale, rsi);
         tvResult.setText(String.format("%.2f", rsi));
+        tvResultLabel.setText(label);
+        showScaleTable(rsiScale, rsi);
     }
 
     private void calculateFFMI() {
@@ -132,7 +208,50 @@ public class CalculationsActivity extends AppCompatActivity {
         double fatFreeMass = weight * (1 - bodyFat / 100.0);
         double ffmi = fatFreeMass / (height * height);
 
+        String label = getLabel(ffmiScale, ffmi);
         tvResult.setText(String.format("%.1f", ffmi));
+        tvResultLabel.setText(label);
+        showScaleTable(ffmiScale, ffmi);
+    }
+
+    private void showScaleTable(JSONArray scale, double currentValue) {
+        scaleTable.removeAllViews();
+
+        if (scale == null) return;
+
+        try {
+            for (int i = 0; i < scale.length(); i++) {
+                JSONObject range = scale.getJSONObject(i);
+                double min = range.getDouble("min");
+                double max = range.getDouble("max");
+                String label = range.getString("label");
+
+                LinearLayout row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setPadding(12, 12, 12, 12);
+
+                if (currentValue >= min && currentValue < max) {
+                    row.setBackgroundColor(getResources().getColor(R.color.light_purple));
+                }
+
+                TextView tvRange = new TextView(this);
+                tvRange.setText(String.format("%.1f - %.1f", min, max));
+                tvRange.setTextColor(getResources().getColor(R.color.white));
+                tvRange.setTextSize(14);
+                tvRange.setWidth(300);
+
+                TextView tvLabel = new TextView(this);
+                tvLabel.setText(label);
+                tvLabel.setTextColor(getResources().getColor(R.color.white));
+                tvLabel.setTextSize(14);
+
+                row.addView(tvRange);
+                row.addView(tvLabel);
+                scaleTable.addView(row);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void showError(String message) {

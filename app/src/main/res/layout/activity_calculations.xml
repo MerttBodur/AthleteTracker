@@ -203,7 +203,6 @@
 
             </LinearLayout>
 
-            <!-- Sonuç -->
             <LinearLayout
                 android:id="@+id/section_result"
                 android:layout_width="match_parent"
@@ -226,6 +225,20 @@
                     android:layout_height="wrap_content"
                     android:text="--"
                     android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/tv_result_label"
+                    style="@style/CardSubtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp" />
+
+                <LinearLayout
+                    android:id="@+id/scale_table"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp" />
 
             </LinearLayout>
 
