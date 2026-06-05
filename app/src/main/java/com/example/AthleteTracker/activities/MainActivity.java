@@ -4,15 +4,39 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.AthleteTracker.R;
+import com.example.AthleteTracker.models.Workout;
+import com.example.AthleteTracker.utils.onWorkoutClickListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements onWorkoutClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Workout objeleri
+        Workout w1 = new Workout("Full Body Foundation 3-Day",
+                "Beginner Strength + Athletic Base",
+                "3x/week", 60,
+                new String[]{"Squat 3x8", "Bench Press 3x8", "Barbell Row 3x8", "Overhead Press 3x8", "Deadlift 3x5"});
+
+        Workout w2 = new Workout("Strength Base 5x5",
+                "Foundational Barbell Strength",
+                "3x/week", 55,
+                new String[]{"Squat 5x5", "Bench Press 5x5", "Barbell Row 5x5", "Overhead Press 5x5", "Deadlift 5x5"});
+
+        Workout w3 = new Workout("5/3/1 Strength 4-Day",
+                "Intermediate Sustainable Strength",
+                "4x/week", 60,
+                new String[]{"Squat 5/3/1", "Bench Press 5/3/1", "Deadlift 5/3/1", "Overhead Press 5/3/1"});
+
+        // Kart tıklamaları
+        findViewById(R.id.card_workout1).setOnClickListener(v -> onWorkoutClick(w1));
+        findViewById(R.id.card_workout2).setOnClickListener(v -> onWorkoutClick(w2));
+        findViewById(R.id.card_workout3).setOnClickListener(v -> onWorkoutClick(w3));
+
+        // Bottom Navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_home);
 
@@ -36,5 +60,16 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    @Override
+    public void onWorkoutClick(Workout workout) {
+        Intent intent = new Intent(this, WorkoutDetailActivity.class);
+        intent.putExtra("name", workout.getName());
+        intent.putExtra("description", workout.getDescription());
+        intent.putExtra("frequency", workout.getFrequency());
+        intent.putExtra("duration", workout.getDuration());
+        intent.putExtra("exercises", workout.getExercises());
+        startActivity(intent);
     }
 }
