@@ -22,10 +22,15 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
     LinearLayout exerciseContainer;
     TextView tvTimer;
+    EditText etWorkoutName;
+    Button btnBack, btnAddExercise, btnFinish;
     int seconds = 0;
     boolean running = true;
     Handler handler = new Handler();
     ArrayList<JSONObject> workoutExercises = new ArrayList<>();
+    ArrayList<String> exerciseNames = new ArrayList<>();
+    ArrayList<String> exerciseCategories = new ArrayList<>();
+    ArrayList<LinearLayout> setsContainers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +39,10 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
         exerciseContainer = findViewById(R.id.exercise_container);
         tvTimer = findViewById(R.id.tv_timer);
-        Button btnBack = findViewById(R.id.btn_back_workout);
-        Button btnAddExercise = findViewById(R.id.btn_add_exercise);
-        Button btnFinish = findViewById(R.id.btn_finish_workout);
+        btnBack = findViewById(R.id.btn_back_workout);
+        btnAddExercise = findViewById(R.id.btn_add_exercise);
+        btnFinish = findViewById(R.id.btn_finish_workout);
+        etWorkoutName = findViewById(R.id.et_workout_name);
 
         startTimer();
 
@@ -113,6 +119,10 @@ public class AddWorkoutActivity extends AppCompatActivity {
         LinearLayout setsContainer = new LinearLayout(this);
         setsContainer.setOrientation(LinearLayout.VERTICAL);
         card.addView(setsContainer);
+
+        exerciseNames.add(name);
+        exerciseCategories.add(category);
+        setsContainers.add(setsContainer);
 
         if (category.equals("Sprint")) {
             addSprintSet(setsContainer, 1);
@@ -226,7 +236,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
         row.addView(inputRow2);
 
-        // Air time girilince jump height otomatik hesapla
         etAirTime.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
                 String airTimeStr = etAirTime.getText().toString();
@@ -265,6 +274,16 @@ public class AddWorkoutActivity extends AppCompatActivity {
     }
 
     private void finishWorkout() {
+        String workoutName = etWorkoutName.getText().toString();
+
+        if (workoutName.isEmpty()) {
+            new AlertDialog.Builder(this)
+                    .setMessage("Please enter a workout name")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return;
+        }
+
         running = false;
 
         SharedPreferences sp = getSharedPreferences("workouts", MODE_PRIVATE);
@@ -276,10 +295,64 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
             String date = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).format(new Date());
 
+            workout.put("name", workoutName);
             workout.put("date", date);
-            workout.put("duration", seconds / 60);
-            workout.put("exerciseCount", exerciseContainer.getChildCount());
+            workout.put("duration", String.valueOf(seconds / 60));
+            workout.put("notes", exerciseNames.size() + " exercises");
 
+            JSONArray exercisesArray = new JSONArray();
+
+            for (int i = 0; i < exerciseNames.size(); i++) {
+                JSONObject exerciseObj = new JSONObject();
+                exerciseObj.put("name", exerciseNames.get(i));
+                exerciseObj.put("category", exerciseCategories.get(i));
+
+                JSONArray setsArray = new JSONArray();
+                LinearLayout container = setsContainers.get(i);
+
+                for (int j = 0; j < container.getChildCount(); j++) {
+                    if (container.getChildAt(j) instanceof LinearLayout) {
+                        JSONObject setObj = new JSONObject();
+                        String category = exerciseCategories.get(i);
+
+                        if (category.equals("Sprint")) {
+                            LinearLayout row = (LinearLayout) container.getChildAt(j);
+                            EditText etDuration = (EditText) row.getChildAt(1);
+                            setObj.put("set", j + 1);
+                            setObj.put("duration", etDuration.getText().toString());
+                        } else if (category.equals("Jump")) {
+                            LinearLayout col = (LinearLayout) container.getChildAt(j);
+                            LinearLayout row1 = (LinearLayout) col.getChildAt(1);
+                            LinearLayout row2 = (LinearLayout) col.getChildAt(2);
+
+                            EditText etReps = (EditText) row1.getChildAt(0);
+                            EditText etAirTime = (EditText) row1.getChildAt(1);
+                            EditText etJumpHeight = (EditText) row2.getChildAt(0);
+                            EditText etGct = (EditText) row2.getChildAt(1);
+
+                            setObj.put("set", j + 1);
+                            setObj.put("reps", etReps.getText().toString());
+                            setObj.put("airTime", etAirTime.getText().toString());
+                            setObj.put("jumpHeight", etJumpHeight.getText().toString());
+                            setObj.put("gct", etGct.getText().toString());
+                        } else {
+                            LinearLayout row = (LinearLayout) container.getChildAt(j);
+                            EditText etReps = (EditText) row.getChildAt(1);
+                            EditText etWeight = (EditText) row.getChildAt(2);
+                            setObj.put("set", j + 1);
+                            setObj.put("reps", etReps.getText().toString());
+                            setObj.put("weight", etWeight.getText().toString());
+                        }
+
+                        setsArray.put(setObj);
+                    }
+                }
+
+                exerciseObj.put("sets", setsArray);
+                exercisesArray.put(exerciseObj);
+            }
+
+            workout.put("exercises", exercisesArray.toString());
             history.put(workout);
             sp.edit().putString("history", history.toString()).apply();
 

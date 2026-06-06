@@ -35,6 +35,15 @@
                 android:textSize="32sp"
                 android:layout_marginTop="16dp" />
 
+            <EditText
+                android:id="@+id/et_workout_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Workout Name"
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp" />
+
             <LinearLayout
                 android:id="@+id/exercise_container"
                 android:layout_width="match_parent"

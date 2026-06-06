@@ -32,6 +32,12 @@ public class PastWorkoutActivity extends AppCompatActivity {
         loadHistory();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadHistory();
+    }
+
     private void showAddDialog() {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
@@ -151,10 +157,60 @@ public class PastWorkoutActivity extends AppCompatActivity {
                     card.addView(tvNotes);
                 }
 
+                final JSONObject workoutData = workout;
+                card.setOnClickListener(v -> {
+                    try {
+                        StringBuilder details = new StringBuilder();
+                        details.append(workoutData.getString("date"));
+                        details.append(" • ").append(workoutData.getString("duration")).append(" min\n\n");
+
+                        if (workoutData.has("exercises")) {
+                            JSONArray exercises = new JSONArray(workoutData.getString("exercises"));
+
+                            for (int j = 0; j < exercises.length(); j++) {
+                                JSONObject ex = exercises.getJSONObject(j);
+                                details.append(ex.getString("name")).append("\n");
+
+                                JSONArray sets = ex.getJSONArray("sets");
+                                String category = ex.getString("category");
+
+                                for (int k = 0; k < sets.length(); k++) {
+                                    JSONObject set = sets.getJSONObject(k);
+
+                                    if (category.equals("Sprint")) {
+                                        details.append("  Set ").append(set.getInt("set"))
+                                                .append(": ").append(set.getString("duration")).append("s\n");
+                                    } else if (category.equals("Jump")) {
+                                        details.append("  Set ").append(set.getInt("set"))
+                                                .append(": ").append(set.getString("reps")).append(" reps")
+                                                .append(" • ").append(set.getString("jumpHeight")).append("cm\n");
+                                    } else {
+                                        details.append("  Set ").append(set.getInt("set"))
+                                                .append(": ").append(set.getString("reps")).append(" x ")
+                                                .append(set.getString("weight")).append("kg\n");
+                                    }
+                                }
+                                details.append("\n");
+                            }
+                        } else {
+                            details.append("No exercise details available");
+                        }
+
+                        new AlertDialog.Builder(this)
+                                .setTitle(workoutData.getString("name"))
+                                .setMessage(details.toString())
+                                .setPositiveButton("OK", null)
+                                .show();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
+
                 historyList.addView(card);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
