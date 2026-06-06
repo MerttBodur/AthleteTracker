@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,9 +24,9 @@ public class ProfileActivity extends AppCompatActivity {
     String selectedSport = "";
 
     EditText etName, etWeight, etBodyfat, etHeight;
-    Button btnSport, btnPosition, btnExperience, btnSave, btnSettings;
+    Button btnSport, btnPosition, btnExperience, btnSave;
     TextView tvWeightValue, tvBodyfatValue, tvFfmiValue;
-
+    ImageView btnSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
         setupPositionButton();
         setupExperienceButton();
         setupSaveButton();
+        setupSettingsButton();
 
         setupBottomNav();
     }
