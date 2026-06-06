@@ -41,14 +41,6 @@
                 android:text="Track your completed workouts"
                 android:layout_marginTop="4dp" />
 
-            <Button
-                android:id="@+id/btn_add_workout"
-                style="@style/OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="+ Log Workout"
-                android:layout_marginTop="20dp" />
-
             <LinearLayout
                 android:id="@+id/workout_history_list"
                 android:layout_width="match_parent"
