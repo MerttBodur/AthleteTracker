@@ -17,24 +17,21 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 
 public class ProfileActivity extends AppCompatActivity {
-
-    // Diziler
     String[] sports = {"Soccer", "Basketball", "Volleyball", "Tackle Football"};
     String[] experiences = {"0-1 Years", "1-3 Years", "3-5 Years", "5+ Years"};
     HashMap<String, String[]> positionMap = new HashMap<>();
     String selectedSport = "";
 
-    // View'lar
     EditText etName, etWeight, etBodyfat, etHeight;
-    Button btnSport, btnPosition, btnExperience, btnSave;
+    Button btnSport, btnPosition, btnExperience, btnSave, btnSettings;
     TextView tvWeightValue, tvBodyfatValue, tvFfmiValue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        // View'ları bul
         etName = findViewById(R.id.et_name);
         etWeight = findViewById(R.id.et_weight);
         etBodyfat = findViewById(R.id.et_bodyfat);
@@ -43,26 +40,23 @@ public class ProfileActivity extends AppCompatActivity {
         btnPosition = findViewById(R.id.btn_position);
         btnExperience = findViewById(R.id.btn_experience);
         btnSave = findViewById(R.id.btn_save);
+        btnSettings = findViewById(R.id.btn_settings);
         tvWeightValue = findViewById(R.id.tv_weight_value);
         tvBodyfatValue = findViewById(R.id.tv_bodyfat_value);
         tvFfmiValue = findViewById(R.id.tv_ffmi_value);
 
-        // Pozisyon map'ini doldur
         positionMap.put("Soccer", new String[]{"Goalkeeper", "Centre Back", "Left-Right Back", "Central Defensive Midfielder", "Central Midfielder", "Central Attacking Midfielder", "Winger", "Centre Forward"});
         positionMap.put("Basketball", new String[]{"Point Guard", "Shooting Guard", "Small Forward", "Power Forward", "Center"});
         positionMap.put("Volleyball", new String[]{"Setter", "Hitter", "Libero", "Defensive Specialist"});
         positionMap.put("Tackle Football", new String[]{"Quarterback", "Running Back", "Wide Receiver", "Offensive Linemen", "Tight End", "H-Back", "Defensive Linemen", "Linebacker", "Defensive Back"});
 
-        // Kayıtlı verileri yükle
         loadProfile();
 
-        // Buton listener'ları
         setupSportButton();
         setupPositionButton();
         setupExperienceButton();
         setupSaveButton();
 
-        // Bottom Navigation
         setupBottomNav();
     }
 
@@ -166,6 +160,12 @@ public class ProfileActivity extends AppCompatActivity {
                     .putString("experience", btnExperience.getText().toString())
                     .putFloat("ffmi", (float) ffmi)
                     .apply();
+        });
+    }
+
+    private void setupSettingsButton() {
+        btnSettings.setOnClickListener(v -> {
+            startActivity(new Intent(this, SettingsActivity.class));
         });
     }
 
