@@ -38,6 +38,10 @@ public class WorkoutActivity extends AppCompatActivity implements onWorkoutClick
             startActivity(new Intent(this, ExerciseCatalogActivity.class));
         });
 
+        findViewById(R.id.btn_start).setOnClickListener(v -> {
+            startActivity(new Intent(this, AddWorkoutActivity.class));
+        });
+
         setupBottomNav();
     }
 

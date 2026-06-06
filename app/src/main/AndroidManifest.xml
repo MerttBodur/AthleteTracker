@@ -20,6 +20,7 @@
         <activity android:name=".activities.WorkoutDetailActivity" />
         <activity android:name=".activities.PastWorkoutActivity" />
         <activity android:name=".activities.ExerciseCatalogActivity" />
+        <activity android:name=".activities.AddWorkoutActivity" />
         <activity
             android:name=".activities.MainActivity"
             android:exported="true">

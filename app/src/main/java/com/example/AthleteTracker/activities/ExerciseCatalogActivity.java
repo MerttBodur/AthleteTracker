@@ -1,5 +1,6 @@
 package com.example.AthleteTracker.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -15,6 +16,7 @@ public class ExerciseCatalogActivity extends AppCompatActivity {
 
     LinearLayout categoryButtons, exerciseList;
     JSONObject allExercises;
+    boolean selectMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class ExerciseCatalogActivity extends AppCompatActivity {
                 exerciseList.addView(tv);
             }
         }).execute("https://raw.githubusercontent.com/MerttBodur/AthleticStandards/refs/heads/main/Exercises.json");
+
+        selectMode = getIntent().getBooleanExtra("selectMode", false);
     }
 
     private void setupCategoryButtons() {
@@ -112,6 +116,23 @@ public class ExerciseCatalogActivity extends AppCompatActivity {
                 card.addView(tvName);
                 card.addView(tvMuscle);
                 card.addView(tvCns);
+
+                if (selectMode) {
+                    card.setOnClickListener(v -> {
+                        Intent result = new Intent();
+                        try {
+                            result.putExtra("exerciseName", exercise.getString("name"));
+                            result.putExtra("exerciseCategory", category);
+                            result.putExtra("exerciseMuscle", exercise.getString("primaryMuscle"));
+                            result.putExtra("exerciseCns", exercise.getString("cns"));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        setResult(RESULT_OK, result);
+                        finish();
+                    });
+                }
+
                 exerciseList.addView(card);
             }
         } catch (Exception e) {
