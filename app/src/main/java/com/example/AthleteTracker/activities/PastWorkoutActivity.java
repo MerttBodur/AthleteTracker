@@ -26,10 +26,8 @@ public class PastWorkoutActivity extends AppCompatActivity {
 
         historyList = findViewById(R.id.workout_history_list);
         Button btnBack = findViewById(R.id.btn_back_history);
-        Button btnAdd = findViewById(R.id.btn_add_workout);
 
         btnBack.setOnClickListener(v -> finish());
-        btnAdd.setOnClickListener(v -> showAddDialog());
 
         loadHistory();
     }
