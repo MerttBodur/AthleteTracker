@@ -15,11 +15,20 @@ public class MainActivity extends AppCompatActivity implements onWorkoutClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Quick Access butonları
+        findViewById(R.id.btn_calculations).setOnClickListener(v -> {
+            startActivity(new Intent(this, CalculationsActivity.class));
+        });
 
+        findViewById(R.id.btn_past_workouts).setOnClickListener(v -> {
+            startActivity(new Intent(this, PastWorkoutActivity.class));
+        });
+
+        // Workout kartları
         Workout w1 = new Workout("Full Body Foundation 3-Day",
                 "Beginner Strength + Athletic Base",
                 "3x/week", 60,
-                new String[]{"Box Jump 3x5", "Back Squat 4x5", "Romanian Deadlift 3x6", "Bench Press 3x5-6", "Weighted Pull-Up 3x5-6" });
+                new String[]{"Box Jump 3x5", "Back Squat 4x5", "Romanian Deadlift 3x6", "Bench Press 3x5-6", "Weighted Pull-Up 3x5-6"});
 
         Workout w2 = new Workout("Strength Base 5x5",
                 "Foundational Barbell Strength",
@@ -35,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements onWorkoutClickLis
         findViewById(R.id.card_workout2).setOnClickListener(v -> onWorkoutClick(w2));
         findViewById(R.id.card_workout3).setOnClickListener(v -> onWorkoutClick(w3));
 
+        // Bottom Navigation
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setSelectedItemId(R.id.nav_home);
 
