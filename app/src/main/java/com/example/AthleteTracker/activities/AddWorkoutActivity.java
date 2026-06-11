@@ -132,6 +132,29 @@ public class AddWorkoutActivity extends AppCompatActivity {
             addWeightSet(setsContainer, 1);
         }
 
+        Button btnRemoveExercise = new Button(this, null, 0, R.style.OutlinedButton);
+        btnRemoveExercise.setText("Remove Exercise");
+        btnRemoveExercise.setTextSize(12);
+
+        final int exerciseIndex = exerciseNames.size() - 1;
+        btnRemoveExercise.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setMessage("Remove " + name + "?")
+                    .setPositiveButton("Remove", (d, w) -> {
+                        exerciseContainer.removeView(card);
+                        int idx = exerciseNames.indexOf(name);
+                        if (idx >= 0) {
+                            exerciseNames.remove(idx);
+                            exerciseCategories.remove(idx);
+                            setsContainers.remove(idx);
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+        card.addView(btnRemoveExercise);
+
         Button btnAddSet = new Button(this, null, 0, R.style.OutlinedButton);
         btnAddSet.setText("+ Add Set");
         btnAddSet.setTextSize(12);
@@ -180,6 +203,13 @@ public class AddWorkoutActivity extends AppCompatActivity {
         etWeight.setWidth(200);
         row.addView(etWeight);
 
+        TextView btnRemoveSet = new TextView(this);
+        btnRemoveSet.setText("  ✕");
+        btnRemoveSet.setTextColor(getResources().getColor(R.color.light_gray));
+        btnRemoveSet.setTextSize(18);
+        btnRemoveSet.setOnClickListener(v -> container.removeView(row));
+        row.addView(btnRemoveSet);
+
         container.addView(row);
     }
 
@@ -187,6 +217,13 @@ public class AddWorkoutActivity extends AppCompatActivity {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.VERTICAL);
         row.setPadding(0, 10, 0, 10);
+
+        TextView btnRemoveSet = new TextView(this);
+        btnRemoveSet.setText("  ✕");
+        btnRemoveSet.setTextColor(getResources().getColor(R.color.light_gray));
+        btnRemoveSet.setTextSize(18);
+        btnRemoveSet.setOnClickListener(v -> container.removeView(row));
+        row.addView(btnRemoveSet);
 
         TextView tvSet = new TextView(this);
         tvSet.setText("Set " + setNum);
@@ -269,6 +306,13 @@ public class AddWorkoutActivity extends AppCompatActivity {
         etDuration.setTextSize(14);
         etDuration.setWidth(300);
         row.addView(etDuration);
+
+        TextView btnRemoveSet = new TextView(this);
+        btnRemoveSet.setText("  ✕");
+        btnRemoveSet.setTextColor(getResources().getColor(R.color.light_gray));
+        btnRemoveSet.setTextSize(18);
+        btnRemoveSet.setOnClickListener(v -> container.removeView(row));
+        row.addView(btnRemoveSet);
 
         container.addView(row);
     }

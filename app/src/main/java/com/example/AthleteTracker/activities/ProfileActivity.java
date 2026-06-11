@@ -24,7 +24,7 @@ public class ProfileActivity extends AppCompatActivity {
     String selectedSport = "";
 
     EditText etName, etWeight, etBodyfat, etHeight;
-    Button btnSport, btnPosition, btnExperience, btnSave;
+    Button btnSport, btnPosition, btnExperience, btnSave, btnSex;
     TextView tvWeightValue, tvBodyfatValue, tvFfmiValue;
     ImageView btnSettings;
 
@@ -41,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         btnPosition = findViewById(R.id.btn_position);
         btnExperience = findViewById(R.id.btn_experience);
         btnSave = findViewById(R.id.btn_save);
+        btnSex = findViewById(R.id.btn_sex);
         btnSettings = findViewById(R.id.btn_settings);
         tvWeightValue = findViewById(R.id.tv_weight_value);
         tvBodyfatValue = findViewById(R.id.tv_bodyfat_value);
@@ -58,6 +59,7 @@ public class ProfileActivity extends AppCompatActivity {
         setupExperienceButton();
         setupSaveButton();
         setupSettingsButton();
+        setupSexButton();
 
         setupBottomNav();
     }
@@ -71,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
         etWeight.setText(sp.getString("weight", ""));
         etBodyfat.setText(sp.getString("bodyFat", ""));
         etHeight.setText(sp.getString("height", ""));
+        btnSex.setText(sp.getString("sex", "Sex"));
 
         selectedSport = sp.getString("sport", "");
 
@@ -160,6 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .putString("sport", btnSport.getText().toString())
                     .putString("position", btnPosition.getText().toString())
                     .putString("experience", btnExperience.getText().toString())
+                    .putString("sex", btnSex.getText().toString())
                     .putFloat("ffmi", (float) ffmi)
                     .apply();
         });
@@ -168,6 +172,19 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupSettingsButton() {
         btnSettings.setOnClickListener(v -> {
             startActivity(new Intent(this, SettingsActivity.class));
+        });
+    }
+
+    private void setupSexButton() {
+        String[] sexOptions = {"Male", "Female"};
+
+        btnSex.setOnClickListener(v -> {
+            new AlertDialog.Builder(this)
+                    .setTitle("Select Sex")
+                    .setItems(sexOptions, (dialog, which) -> {
+                        btnSex.setText(sexOptions[which]);
+                    })
+                    .show();
         });
     }
 
