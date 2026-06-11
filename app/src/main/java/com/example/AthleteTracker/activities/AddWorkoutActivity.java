@@ -27,7 +27,6 @@ public class AddWorkoutActivity extends AppCompatActivity {
     int seconds = 0;
     boolean running = true;
     Handler handler = new Handler();
-    ArrayList<JSONObject> workoutExercises = new ArrayList<>();
     ArrayList<String> exerciseNames = new ArrayList<>();
     ArrayList<String> exerciseCategories = new ArrayList<>();
     ArrayList<LinearLayout> setsContainers = new ArrayList<>();
@@ -136,13 +135,12 @@ public class AddWorkoutActivity extends AppCompatActivity {
         btnRemoveExercise.setText("Remove Exercise");
         btnRemoveExercise.setTextSize(12);
 
-        final int exerciseIndex = exerciseNames.size() - 1;
         btnRemoveExercise.setOnClickListener(v -> {
             new AlertDialog.Builder(this)
                     .setMessage("Remove " + name + "?")
                     .setPositiveButton("Remove", (d, w) -> {
                         exerciseContainer.removeView(card);
-                        int idx = exerciseNames.indexOf(name);
+                        int idx = setsContainers.indexOf(setsContainer);
                         if (idx >= 0) {
                             exerciseNames.remove(idx);
                             exerciseCategories.remove(idx);
@@ -218,18 +216,24 @@ public class AddWorkoutActivity extends AppCompatActivity {
         row.setOrientation(LinearLayout.VERTICAL);
         row.setPadding(0, 10, 0, 10);
 
-        TextView btnRemoveSet = new TextView(this);
-        btnRemoveSet.setText("  ✕");
-        btnRemoveSet.setTextColor(getResources().getColor(R.color.light_gray));
-        btnRemoveSet.setTextSize(18);
-        btnRemoveSet.setOnClickListener(v -> container.removeView(row));
-        row.addView(btnRemoveSet);
+        LinearLayout headerRow = new LinearLayout(this);
+        headerRow.setOrientation(LinearLayout.HORIZONTAL);
 
         TextView tvSet = new TextView(this);
         tvSet.setText("Set " + setNum);
         tvSet.setTextColor(getResources().getColor(R.color.white));
         tvSet.setTextSize(14);
-        row.addView(tvSet);
+        tvSet.setWidth(300);
+        headerRow.addView(tvSet);
+
+        TextView btnRemoveSet = new TextView(this);
+        btnRemoveSet.setText("  ✕");
+        btnRemoveSet.setTextColor(getResources().getColor(R.color.light_gray));
+        btnRemoveSet.setTextSize(18);
+        btnRemoveSet.setOnClickListener(v -> container.removeView(row));
+        headerRow.addView(btnRemoveSet);
+
+        row.addView(headerRow);
 
         LinearLayout inputRow1 = new LinearLayout(this);
         inputRow1.setOrientation(LinearLayout.HORIZONTAL);
@@ -277,9 +281,13 @@ public class AddWorkoutActivity extends AppCompatActivity {
             if (!hasFocus) {
                 String airTimeStr = etAirTime.getText().toString();
                 if (!airTimeStr.isEmpty()) {
-                    double airTime = Double.parseDouble(airTimeStr);
-                    double jumpHeight = (9.81 * airTime * airTime) / 2.0 * 100;
-                    etJumpHeight.setText(String.format("%.1f", jumpHeight));
+                    try {
+                        double airTime = Double.parseDouble(airTimeStr);
+                        double jumpHeight = (9.81 * airTime * airTime) / 2.0 * 100;
+                        etJumpHeight.setText(String.format("%.1f", jumpHeight));
+                    } catch (NumberFormatException e) {
+                        etJumpHeight.setText("");
+                    }
                 }
             }
         });
@@ -315,6 +323,16 @@ public class AddWorkoutActivity extends AppCompatActivity {
         row.addView(btnRemoveSet);
 
         container.addView(row);
+    }
+
+    private void collectEditTexts(LinearLayout layout, ArrayList<EditText> result) {
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            if (layout.getChildAt(i) instanceof EditText) {
+                result.add((EditText) layout.getChildAt(i));
+            } else if (layout.getChildAt(i) instanceof LinearLayout) {
+                collectEditTexts((LinearLayout) layout.getChildAt(i), result);
+            }
+        }
     }
 
     private void finishWorkout() {
@@ -353,43 +371,38 @@ public class AddWorkoutActivity extends AppCompatActivity {
 
                 JSONArray setsArray = new JSONArray();
                 LinearLayout container = setsContainers.get(i);
+                String category = exerciseCategories.get(i);
+                int setNumber = 1;
 
                 for (int j = 0; j < container.getChildCount(); j++) {
-                    if (container.getChildAt(j) instanceof LinearLayout) {
-                        JSONObject setObj = new JSONObject();
-                        String category = exerciseCategories.get(i);
+                    if (!(container.getChildAt(j) instanceof LinearLayout)) continue;
 
-                        if (category.equals("Sprint")) {
-                            LinearLayout row = (LinearLayout) container.getChildAt(j);
-                            EditText etDuration = (EditText) row.getChildAt(1);
-                            setObj.put("set", j + 1);
-                            setObj.put("duration", etDuration.getText().toString());
-                        } else if (category.equals("Jump")) {
-                            LinearLayout col = (LinearLayout) container.getChildAt(j);
-                            LinearLayout row1 = (LinearLayout) col.getChildAt(1);
-                            LinearLayout row2 = (LinearLayout) col.getChildAt(2);
+                    LinearLayout setRow = (LinearLayout) container.getChildAt(j);
+                    ArrayList<EditText> inputs = new ArrayList<>();
+                    collectEditTexts(setRow, inputs);
 
-                            EditText etReps = (EditText) row1.getChildAt(0);
-                            EditText etAirTime = (EditText) row1.getChildAt(1);
-                            EditText etJumpHeight = (EditText) row2.getChildAt(0);
-                            EditText etGct = (EditText) row2.getChildAt(1);
+                    JSONObject setObj = new JSONObject();
 
-                            setObj.put("set", j + 1);
-                            setObj.put("reps", etReps.getText().toString());
-                            setObj.put("airTime", etAirTime.getText().toString());
-                            setObj.put("jumpHeight", etJumpHeight.getText().toString());
-                            setObj.put("gct", etGct.getText().toString());
-                        } else {
-                            LinearLayout row = (LinearLayout) container.getChildAt(j);
-                            EditText etReps = (EditText) row.getChildAt(1);
-                            EditText etWeight = (EditText) row.getChildAt(2);
-                            setObj.put("set", j + 1);
-                            setObj.put("reps", etReps.getText().toString());
-                            setObj.put("weight", etWeight.getText().toString());
-                        }
-
-                        setsArray.put(setObj);
+                    if (category.equals("Sprint")) {
+                        if (inputs.size() < 1) continue;
+                        setObj.put("set", setNumber);
+                        setObj.put("duration", inputs.get(0).getText().toString());
+                    } else if (category.equals("Jump")) {
+                        if (inputs.size() < 4) continue;
+                        setObj.put("set", setNumber);
+                        setObj.put("reps", inputs.get(0).getText().toString());
+                        setObj.put("airTime", inputs.get(1).getText().toString());
+                        setObj.put("jumpHeight", inputs.get(2).getText().toString());
+                        setObj.put("gct", inputs.get(3).getText().toString());
+                    } else {
+                        if (inputs.size() < 2) continue;
+                        setObj.put("set", setNumber);
+                        setObj.put("reps", inputs.get(0).getText().toString());
+                        setObj.put("weight", inputs.get(1).getText().toString());
                     }
+
+                    setsArray.put(setObj);
+                    setNumber++;
                 }
 
                 exerciseObj.put("sets", setsArray);
@@ -405,7 +418,10 @@ public class AddWorkoutActivity extends AppCompatActivity {
                     .setPositiveButton("OK", (d, w) -> finish())
                     .show();
         } catch (Exception e) {
-            e.printStackTrace();
+            new AlertDialog.Builder(this)
+                    .setMessage("Error: " + e.getMessage())
+                    .setPositiveButton("OK", null)
+                    .show();
         }
     }
 
