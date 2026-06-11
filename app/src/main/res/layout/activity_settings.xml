@@ -26,31 +26,6 @@
             android:layout_marginTop="16dp" />
 
         <LinearLayout
-            android:id="@+id/btn_language"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/card_background"
-            android:padding="16dp"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                style="@style/CardTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Language" />
-
-            <TextView
-                android:id="@+id/tv_current_lang"
-                style="@style/CardSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="English" />
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/btn_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

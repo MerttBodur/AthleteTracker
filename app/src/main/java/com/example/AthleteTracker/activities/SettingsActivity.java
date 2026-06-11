@@ -16,34 +16,19 @@ import com.example.AthleteTracker.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    TextView tvCurrentLang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        tvCurrentLang = findViewById(R.id.tv_current_lang);
         Button btnBack = findViewById(R.id.btn_back_settings);
-        LinearLayout btnLanguage = findViewById(R.id.btn_language);
         LinearLayout btnNotification = findViewById(R.id.btn_notification);
         LinearLayout btnShare = findViewById(R.id.btn_share);
         LinearLayout btnReset = findViewById(R.id.btn_reset);
         LinearLayout btnAbout = findViewById(R.id.btn_about);
 
         btnBack.setOnClickListener(v -> finish());
-
-        btnLanguage.setOnClickListener(v -> {
-            String[] languages = {"English", "Türkçe"};
-            new AlertDialog.Builder(this)
-                    .setTitle("Select Language")
-                    .setItems(languages, (dialog, which) -> {
-                        tvCurrentLang.setText(languages[which]);
-                        SharedPreferences sp = getSharedPreferences("settings", MODE_PRIVATE);
-                        sp.edit().putString("language", languages[which]).apply();
-                    })
-                    .show();
-        });
 
         btnNotification.setOnClickListener(v -> {
             createNotificationChannel();
@@ -100,7 +85,6 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void loadSettings() {
         SharedPreferences sp = getSharedPreferences("settings", MODE_PRIVATE);
-        tvCurrentLang.setText(sp.getString("language", "English"));
     }
 
     private void createNotificationChannel() {
